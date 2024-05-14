@@ -3,6 +3,7 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
 import { verify } from "hono/jwt";
 import { number, string, z } from "zod";
+import { BlogPostSchema, BlogUpdateSchema} from '@amjuz/medium-blog'
 
 export const blogRouter = new Hono<{
     Bindings: {
@@ -99,10 +100,6 @@ export const blogRouter = new Hono<{
    
 //   -----------  POST BLOG -----------------      
 
-    const BlogPostSchema = z.object({
-        title: z.string(),
-        content: z.string(),
-    })
 
     type BlogPost = z.infer<typeof BlogPostSchema>;
 
@@ -150,11 +147,6 @@ export const blogRouter = new Hono<{
     
     //--------- update Blog ----------  
 
-    const BlogUpdateSchema = z.object({
-        id: z.number(),
-        title: z.string(),
-        content: z.string()
-    })
 
     blogRouter.put('/update', async(c) => {
         
@@ -229,23 +221,3 @@ export const blogRouter = new Hono<{
         }
     })
     
-    // blogRouter.get('/:id',async (c)=> {
-
-    //     console.log("Control reached id route")
-
-    //     const prisma = new PrismaClient({
-    //         datasourceUrl: c.env.DATABASE_URL
-    //     }).$extends(withAccelerate());
-
-    //     const id = c.req.param("id");
-
-    //     const blog = await prisma.post.findFirst({
-    //         where:{
-    //             id: Number(id)
-    //         }
-    //     })
-    //     c.json({
-    //         blog: blog
-    //     })
-    //     console.log("hey")
-    // })
