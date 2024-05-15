@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SignupInput, SigninInput } from "@amjuz/medium-blog"
 import { ChangeEvent, useState } from "react";3
 import { Button } from '../compnents/Button'
+import axios from "axios";
+import { BACKEND_URL } from '../../config'
 
 
 export function Auth({ type }: {
@@ -14,10 +16,40 @@ export function Auth({ type }: {
         
     })
 
-    const [ signinDetails, setSigninDetails ] =useState<SigninInput>({
+    const [ signinDetails, setSigninDetails ] = useState<SigninInput>({
         email: "",
         password: ""
     })
+
+    const navigate = useNavigate();
+
+    async function signinRequest(){
+        
+        try{
+            
+            const res = await axios.post(`${BACKEND_URL}/api/v1/user/${type}`, signinDetails);
+            const token = res.data?.token;
+            localStorage.setItem('token', token);
+            navigate("/blog")
+        } catch(e) {
+            alert("request failed")
+        }
+    }
+
+    async function signupRequest() {
+        try {
+            const res = await axios.post(`${BACKEND_URL}/api/v1/user/${type}`, signupDetails);
+            const token = res.data;
+            if(token){
+                alert("signup successfull")
+                navigate('/signin')
+            } else {
+                alert("failed to complete request")
+            }
+        } catch(e) {
+            alert("request failed")
+        }
+    }
 
     return(
         <div className="flex flex-col justify-center h-lvh ">
@@ -47,6 +79,7 @@ export function Auth({ type }: {
                         }
 
                         <InputDetails label="Email" placeholder= "email@example.com" type="text" onChange={(e)=>{
+
                             { type === "signin" ? (
                                 setSigninDetails( (c) => ({
                                     ...c,
@@ -59,7 +92,9 @@ export function Auth({ type }: {
                                 }))
                             )}
                         }}/>
+
                         <InputDetails label="password" type="password" placeholder="password" onChange={(e) => {
+
                             { type === "signin" ? (
                                 setSigninDetails( (c) => ({
                                     ...c,
@@ -72,7 +107,8 @@ export function Auth({ type }: {
                                 }))
                             )}
                         }}/>
-                        <Button className="text-white bg-black px-7 py-2 rounded-md mt-3 w-full font-medium hover:bg-" label={ type === "signin" ? "SignIn" : "SignUp"} />
+                        <Button className="text-white bg-black px-7 py-2 rounded-md mt-3 w-full font-medium hover:bg-" 
+                        onClick={type === "signin" ? signinRequest : signupRequest } label={ type === "signin" ? "SignIn" : "SignUp"} />
                     </div>
                 </div>
             </div>

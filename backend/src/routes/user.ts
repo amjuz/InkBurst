@@ -4,6 +4,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign, decode, verify } from "hono/jwt";
 import { signinSchema, signupSchema } from '@amjuz/medium-blog'
+import { cors } from "hono/cors";
 
 export const userRouter = new Hono<{
     Bindings: {
@@ -12,12 +13,13 @@ export const userRouter = new Hono<{
     }
 }>();
 
-  userRouter.post('/test',(c)=>{
+  userRouter.get('/test',(c)=>{
     return c.json({
-      message: "hey"
+      message: "hey there"
     })
   })
 
+  userRouter.use("/*",cors());
 
   userRouter.post('/signup',async (c) => {
   
