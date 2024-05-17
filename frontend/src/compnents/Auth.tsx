@@ -52,7 +52,7 @@ export function Auth({ type }: {
     }
 
     return(
-        <div className="flex flex-col justify-center h-lvh ">
+        <div className="flex flex-col justify-center ">
             <div className="flex justify-center">
                 <div className="w-3/5">
                     <div className="text-center  ">
@@ -107,7 +107,7 @@ export function Auth({ type }: {
                                 }))
                             )}
                         }}/>
-                        <Button className="text-white bg-black px-7 py-2 rounded-md mt-3 w-full font-medium hover:bg-" 
+                        <Button className="w-full mt-3" 
                         onClick={type === "signin" ? signinRequest : signupRequest } label={ type === "signin" ? "SignIn" : "SignUp"} />
                     </div>
                 </div>

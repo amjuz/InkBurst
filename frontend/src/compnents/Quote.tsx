@@ -1,7 +1,8 @@
+import { Button } from "./Button";
 
 export function Quote(){
     return(
-        <div className="flex flex-col justify-center  h-lvh ">
+        <div className="flex flex-col justify-center  ">
             <div className="flex justify-center">
                 <div className="max-w-2xl">
                     <div className="text-3xl font-extrabold">

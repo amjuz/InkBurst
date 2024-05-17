@@ -1,4 +1,4 @@
-import { Routes, BrowserRouter, Route } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import { Home } from "./pages/Home"
 import { Blog } from "./pages/Blog"
 import { Signin } from "./pages/Signin"
@@ -8,7 +8,7 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
+      <div className="">
         <Routes>
           <Route path="/signin" element={<Signin/>}/>
           <Route path="/signup" element={<Signup/>}/>
@@ -16,7 +16,7 @@ function App() {
           <Route path="/" element={<Home/>}/>
           <Route path="*" element={<>route not defined</>}/>
         </Routes>
-      </BrowserRouter>
+      </div>
     </>
   )
 }
