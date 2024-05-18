@@ -18,12 +18,12 @@ export function Navbar({ className }: {
             </div>
             <div className="flex items-center justify-end pr-4 gap-2">
                 <a href="/signin">
-                    <Button className='bg-white text-black' label='Signin' />
+                    <Button className='hover:text-black hover:bg-white text-black' label='Signin' />
                 </a>
                 <a href="/signup">
-                    <Button className='bg-white text-black' label='Signup'/>
+                    <Button className='  hover:text-black hover:bg-white text-black' label='Signup'/>
                 </a>
-                { <Button label='logout' onClick={()=>{
+                {<Button className="hover:text-black hover:bg-white" label='logout' onClick={()=>{
                      localStorage.removeItem("token");
                      navigate("/signin")
                 }}/>}

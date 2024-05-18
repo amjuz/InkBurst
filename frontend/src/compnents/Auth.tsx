@@ -57,7 +57,7 @@ export function Auth({ type }: {
                 <div className="w-3/5">
                     <div className="text-center  ">
                         <p className="text-4xl font-black">{ type === "signin" ? "Sign In To Your Account " : "Create an account "}</p>
-                        <p className="pt-2 text-gray-500">{ type === "signin" ? "Don't have an account ? " : ("Already have an account ? ")} 
+                        <p className="pt-2 text-neutral-200">{ type === "signin" ? "Don't have an account ? " : ("Already have an account ? ")} 
                             <Link className="underline" to={ type === "signin" ? "/signup" : "/signin"}>
                                 { type === "signin" ? "signup" : "signin" }
                             </Link>
