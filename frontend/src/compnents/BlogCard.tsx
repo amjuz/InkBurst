@@ -21,8 +21,8 @@ export function BlogCard({
 }: BlogCardType ) {
     
     return(
-        <div className="bg-white rounded-2xl hover:bg-stone-100 hover:cursor-pointer  pl-24 max-h-56 pr-20 py-5 ">
-            <div className="flex flex-col max-w-4xl gap-2  ">
+        <div className="bg-white rounded-2xl max-w-fit min-w-full  hover:bg-stone-100 hover:cursor-pointer px-3 py-3">
+            <div className="flex flex-col gap-2 ">
                 <div className="flex items-center gap-2">
                     <div className="">
                         <Avatar/>
@@ -30,12 +30,12 @@ export function BlogCard({
                     <div className=" font-medium">{name}.</div>
                     <div className="">{date}</div>
                 </div>
-                <div className="flex 0 ">
-                    <div className="flex flex-col">
-                        <div className="font-bold text-2xl">{title}</div>
-                        <div className="font-serif">{content.slice(0, 300) + "..." }</div>
+                <div className="flex  justify-between min-h-8 max-h-28 gap-5">
+                    <div className="flex flex-col ">
+                        <div className="font-bold text-2xl overflow-hidden">{title.slice(0, 50 ) + "..."}</div>
+                        <div className="font-serif overflow-hidden">{content.slice(0, 370) + "..." }</div>
                     </div>
-                    <div className="w-64 border-4 border-slate-400   rounded-xl ">
+                    <div className="min-w-32 max-h-28 border-4 border-slate-400 mr-4 rounded-xl hidden sm:block">
                         {postPhoto}
                     </div>
                 </div>
