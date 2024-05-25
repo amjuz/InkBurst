@@ -1,12 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from './Button'
 
-export function Navbar({ className }: {
-    className: string
-} ){
+export function Navbar(){
     const navigate = useNavigate();
     return (
-        <main className={` grid grid-cols-2 text-white bg-black w-full h-20 ${ className } `}>
+        <div className={` grid grid-cols-2 text-white bg-black w-full h-20 fixed z-50 top-0 left-0 right-0 shadow-xl `}>
             <div className="flex justify-center  items-center text-xl gap-2 font-semibold">
                 <div className="">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
@@ -28,6 +26,6 @@ export function Navbar({ className }: {
                      navigate("/signin")
                 }}/>}
             </div>
-        </main>
+        </div>
     )
 }

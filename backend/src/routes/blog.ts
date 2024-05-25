@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
 import { verify } from "hono/jwt";
-import { number, string, z } from "zod";
+import { date, number, string, z } from "zod";
 import { BlogPostSchema, BlogUpdateSchema} from '@amjuz/medium-blog'
 
 export const blogRouter = new Hono<{
@@ -127,13 +127,17 @@ export const blogRouter = new Hono<{
                 data: {
                     title: body.title,
                     content: body.content,
-                    authorId: Number(authorId)
+                    createdAt: new Date,
+                    authorId: Number(authorId),
+                    genre: body.genre,
+                    photoUrl: body.photoUrl ? body.photoUrl : "",
+                    published: true
                 }
             });
 
             
             return c.json({
-                message: body,
+                message: newBlog,
                 id: newBlog?.id
             })
 
@@ -177,12 +181,15 @@ export const blogRouter = new Hono<{
                 },
                 data: {
                     title: body.title,
-                    content: body.title
+                    content: body.content,
+                    genre: body.genre,
+                    
                 }
             })
 
             return c.json({
-                id: updateBlog?.id 
+                id: updateBlog?.id,
+                updatesBlog: updateBlog 
             })
 
         } catch (e) {
@@ -206,7 +213,20 @@ export const blogRouter = new Hono<{
                 datasourceUrl: c.env.DATABASE_URL
             }).$extends(withAccelerate());
     
-            const allBlog = await prisma.post.findMany();
+            const allBlog = await prisma.post.findMany({
+                select: {
+                    title: true,
+                    content: true,
+                    genre: true,
+                    createdAt: true,
+                    photoUrl: true,
+                    author: {
+                        select: {
+                            name: true
+                        }
+                    }
+                }
+            });
             
             return c.json({
                 allBlog
