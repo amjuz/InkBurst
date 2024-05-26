@@ -9,7 +9,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
-        <Navbar />
+        <Navbar/>
         <App />
       </div>
     </BrowserRouter>

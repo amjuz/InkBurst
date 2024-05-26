@@ -22,7 +22,7 @@ model Post {
   title     String
   content   String
   genre     String
-  createdAt DateTime 
+  createdAt DateTime @default(now())
   photoUrl  String 
   published Boolean  @default(false)
   author    User     @relation(fields: [authorId], references: [id])

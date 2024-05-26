@@ -81,6 +81,16 @@ export const blogRouter = new Hono<{
         const blog = await prisma.post.findFirst({
             where: {
                 id : Number(blogId)
+            },
+            select: {
+                title: true,
+                content: true,
+                createdAt: true,
+                author: {
+                    select: {
+                        name: true
+                    }
+                }
             }
         })
                      
@@ -91,8 +101,6 @@ export const blogRouter = new Hono<{
         }
 
         return c.json({
-            message: 'new route',
-            id : blogId,
             blog: blog
         })
     })
@@ -215,6 +223,7 @@ export const blogRouter = new Hono<{
     
             const allBlog = await prisma.post.findMany({
                 select: {
+                    id: true,
                     title: true,
                     content: true,
                     genre: true,

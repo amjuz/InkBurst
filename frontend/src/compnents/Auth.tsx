@@ -3,7 +3,7 @@ import { SignupInput, SigninInput } from "@amjuz/medium-blog"
 import { ChangeEvent, useState } from "react";3
 import { Button } from '../compnents/Button'
 import axios from "axios";
-import { BACKEND_URL } from '../../config'
+import { BACKEND_URL } from '../config'
 
 
 export function Auth({ type }: {
