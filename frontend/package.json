@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@amjuz/medium-blog": "^1.0.2",
+    "@amjuz/medium-blog": "^1.0.4",
     "@types/axios": "^0.14.0",
     "axios": "^1.6.8",
     "lucide": "^0.378.0",

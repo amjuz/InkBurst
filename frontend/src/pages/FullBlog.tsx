@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useBlog } from "../hooks"
+import { OneBlogSkelton } from "../compnents/OneBlogSkelton";
 
 export const FullBlog = () => {
     const params = useParams<{ id: string }>(); 
@@ -8,22 +9,23 @@ export const FullBlog = () => {
 
     if(loading){
         return <div>
-            loading...
+            <OneBlogSkelton/>
         </div>
     }
 
-    return <div className="flex flex-col items-center bg-slate-300 w-screen h-full">
-        <div className="flex  flex-col bg-yellow-300 min-w-96 w-4/6 pt-10 px-8  gap-2">
-            <div className="text-5xl font-extrabold overflow-hidden">{blog?.title}</div>
-            <div className="flex items-center gap-4 bg-teal-300 py-2 min-w-80">
+    return <div className="flex flex-col items-center  w-screen h-full">
+        <div className="flex flex-col  min-w-96 w-2/5 pt-10 px-8  gap-2">
+            <div className="text-5xl font-extrabold py-2 overflow-hidden ">{blog?.title}</div>
+            <div className="flex items-center gap-4  py-2 min-w-80">
                 <Avatar/>
                 <div className="">
                     <div className="">{blog?.author.name} . Follow</div>
                     <div className="">{blog?.createdAt}. date</div>
                 </div>
             </div>
-            <div>{blog?.content}</div>
-
+            <div className="leading-8 font-bitter ">
+                {blog?.content}
+            </div>
         </div>
         
     </div>

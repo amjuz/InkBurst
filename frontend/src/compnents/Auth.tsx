@@ -30,7 +30,7 @@ export function Auth({ type }: {
             const res = await axios.post(`${BACKEND_URL}/api/v1/user/${type}`, signinDetails);
             const token = res.data?.token;
             localStorage.setItem('token', token);
-            navigate("/blog")
+            navigate("/blogs")
         } catch(e) {
             alert("request failed")
         }
@@ -73,11 +73,6 @@ export function Auth({ type }: {
                             }}/>
                         }
 
-                        { type === "signup" ?
-                        JSON.stringify(signupDetails):
-                        JSON.stringify(signinDetails)
-                        }
-
                         <InputDetails label="Email" placeholder= "email@example.com" type="text" onChange={(e)=>{
 
                             { type === "signin" ? (
@@ -107,8 +102,11 @@ export function Auth({ type }: {
                                 }))
                             )}
                         }}/>
-                        <Button className="w-full mt-3" 
-                        onClick={type === "signin" ? signinRequest : signupRequest } label={ type === "signin" ? "SignIn" : "SignUp"} />
+                        <Button 
+                            className="w-full mt-3 grid place-content-center" 
+                            onClick={type === "signin" ? signinRequest : signupRequest } 
+                            label={ type === "signin" ? "SignIn" : "SignUp"} 
+                        />
                     </div>
                 </div>
             </div>

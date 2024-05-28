@@ -63,6 +63,13 @@ export const blogRouter = new Hono<{
         
     })
 
+    blogRouter.get('/auth',async (c) => {
+        c.status(200);
+        return c.json({
+            msg: "token found"
+        })
+    })
+
 // ------- get blog--------------
 
 

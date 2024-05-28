@@ -5,6 +5,7 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign, decode, verify } from "hono/jwt";
 import { signinSchema, signupSchema } from '@amjuz/medium-blog'
 import { cors } from "hono/cors";
+import { env } from "hono/adapter";
 
 export const userRouter = new Hono<{
     Bindings: {
@@ -140,4 +141,5 @@ export const userRouter = new Hono<{
     }
   
   })
+  
   
