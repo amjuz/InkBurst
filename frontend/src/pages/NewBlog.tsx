@@ -10,6 +10,9 @@ import { useNavigate } from "react-router-dom";
 export const NewBlog = () => {
     const navigate = useNavigate();
 
+    const [ loading, setLoading ] = useState(false);
+    const [ alertMessage, setAlertMesasge ] = useState(false);
+
     const [ titleVisibility, setTitleVisibility ] = useState(false);
     const handleTitleFocus = () => setTitleVisibility(true)
     const handleTitleBlur = () => setTitleVisibility(false)
@@ -23,23 +26,44 @@ export const NewBlog = () => {
         content: "",
         genre: ""
     }) 
+    
+    
 
     const publishBlog = async () => {
-        const res = await  axios.post(`${BACKEND_URL}/api/v1/blog/post`,{
+
+        if( !BlogDetails.title || !BlogDetails.content || !BlogDetails.genre ){
+            setAlertMesasge(true)
+            setTimeout(() => {
+                setAlertMesasge(false)
+            }, 2000);
+            return null;
+        }
+        setLoading(true)
+    
+        try{
+            const res = await  axios.post(`${BACKEND_URL}/api/v1/blog/post`,{
                 title: BlogDetails.title, 
                 content: BlogDetails.content,
                 genre: BlogDetails.genre
-        },{
-            headers: {
-                authorization: localStorage.getItem('token')
-            },
-        })
-
-        navigate(`/blog/${res.data.id}`);
+            },{
+                headers: {
+                    authorization: localStorage.getItem('token')
+                },
+            })
+           
+            setLoading(false)
+            navigate(`/blog/${res.data.id}`);
+        } catch(e) {
+            setLoading(false)
+            console.log(e);
+        }
         
     }
+
+    
     return (
-        <div className="h-screen w-screen flex justify-center  gap-2 pt-2">
+        <div className=" h-screen w-screen flex justify-center  gap-2 pt-2">
+                
                 <div className=" flex flex-col  gap-4 w-5/12 p-2 min-w-96">
                     <div className="flex " onFocus={handleTitleFocus} onBlur={handleTitleBlur}>
                         <button className={`pr-2 ${ titleVisibility ? 'visible' : 'invisible'} `}>
@@ -102,16 +126,21 @@ export const NewBlog = () => {
                         </div>
                     </div>
                     
-                    <div className="w-full flex justify-end">
+                    <div className="relative  w-full flex justify-end ">
                         <Button 
+                            type="submit"
                             label="Publish"
                             onClick={publishBlog}
+                            loading={loading}
+                            className="rounded-lg font-bold  hover:text-gray-400"
                         />
+                        { alertMessage ? (
+                            <div className="absolute grid w-fit h-max top-full  "> please provide input details</div>
+                            
+                        ):( null ) }
                     </div>
                     
                 </div>
             </div>
-           
-        
     );
 }

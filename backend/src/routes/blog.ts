@@ -52,16 +52,19 @@ export const blogRouter = new Hono<{
                 })
             }
             
-        } catch(e) {
-            
-            c.status(411);
-            c.json({
-                message: "Error occurred in middleware"
-            })
-        }
-        
+        }  catch (e) {
+            console.error('Error in middleware:', e);
+            c.status(500);
+            return c.json({ message: 'Internal Server Error' });
+          }
         
     })
+
+    blogRouter.get('/auth',(c)=>{
+        return c.json({
+          message: "verified"
+        })
+      })
 
     blogRouter.get('/auth',async (c) => {
         c.status(200);

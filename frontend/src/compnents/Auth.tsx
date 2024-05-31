@@ -4,11 +4,16 @@ import { ChangeEvent, useState } from "react";3
 import { Button } from '../compnents/Button'
 import axios from "axios";
 import { BACKEND_URL } from '../config'
+import { LoadingButton } from "./LoadingButton";
 
 
 export function Auth({ type }: {
     type: "signup" | "signin"
 }){
+    const navigate = useNavigate();
+    const [ loading , setLoading ] = useState(false);
+    const [ alertMessage, setAlertMesasge ] = useState("")
+
     const [ signupDetails, setSignupDetails ] = useState<SignupInput>({
         name: "",
         email: "",
@@ -21,33 +26,46 @@ export function Auth({ type }: {
         password: ""
     })
 
-    const navigate = useNavigate();
 
     async function signinRequest(){
-        
+
+        if(!signinDetails.email || !signinDetails.password ){
+            return setAlertMesasge('input fields cannot be empty')
+        }
         try{
             
+            setLoading(true);
             const res = await axios.post(`${BACKEND_URL}/api/v1/user/${type}`, signinDetails);
             const token = res.data?.token;
             localStorage.setItem('token', token);
+            setLoading(false)
             navigate("/blogs")
         } catch(e) {
-            alert("request failed")
+            setLoading(false)
+            setAlertMesasge("request failed, please try again")
         }
+        
     }
-
+    
     async function signupRequest() {
         try {
+            if(!signupDetails.email || !signupDetails.password || !signupDetails.name ){
+                return setAlertMesasge('Input fields cannot be empty')
+            }
+            setLoading(true);
             const res = await axios.post(`${BACKEND_URL}/api/v1/user/${type}`, signupDetails);
             const token = res.data;
             if(token){
-                alert("signup successfull")
+                setLoading(false);
                 navigate('/signin')
+                setAlertMesasge("Signup successfull")
             } else {
-                alert("failed to complete request")
+                setLoading(false);
+                setAlertMesasge("request failed ")
             }
         } catch(e) {
-            alert("request failed")
+            setLoading(false);
+            setAlertMesasge("request failed ")
         }
     }
 
@@ -65,7 +83,11 @@ export function Auth({ type }: {
                     </div>
                     <div className="pt-7">
                         { type === "signin" ? null : 
-                            <InputDetails label="Username" placeholder= "Enter your username" type="text" onChange={ (e) => {
+                            <InputDetails 
+                                label="Username"
+                                placeholder= "Enter your username" 
+                                type="text" 
+                                onChange={ (e) => {
                                 setSignupDetails(c => ({
                                     ...c,
                                     name: e.target.value
@@ -73,7 +95,11 @@ export function Auth({ type }: {
                             }}/>
                         }
 
-                        <InputDetails label="Email" placeholder= "email@example.com" type="text" onChange={(e)=>{
+                        <InputDetails 
+                            label="Email" 
+                            placeholder= "email@example.com" 
+                            type="text" 
+                            onChange={(e)=>{
 
                             { type === "signin" ? (
                                 setSigninDetails( (c) => ({
@@ -88,7 +114,11 @@ export function Auth({ type }: {
                             )}
                         }}/>
 
-                        <InputDetails label="password" type="password" placeholder="password" onChange={(e) => {
+                        <InputDetails 
+                            label="password" 
+                            type="password" 
+                            placeholder="password" 
+                            onChange={(e) => {
 
                             { type === "signin" ? (
                                 setSigninDetails( (c) => ({
@@ -103,10 +133,12 @@ export function Auth({ type }: {
                             )}
                         }}/>
                         <Button 
-                            className="w-full mt-3 grid place-content-center" 
+                            className="w-full mt-3 grid place-content-center rounded-lg" 
                             onClick={type === "signin" ? signinRequest : signupRequest } 
-                            label={ type === "signin" ? "SignIn" : "SignUp"} 
+                            label={ type === "signin" ? (loading ? (<LoadingButton/>) : "SignIn") : (loading ? (<LoadingButton/>) : "SignUp")} 
                         />
+
+                        { alertMessage && <div className="flex justify-center text-red-500 font-bold mb-4">{alertMessage}</div>}
                     </div>
                 </div>
             </div>
@@ -114,17 +146,18 @@ export function Auth({ type }: {
     );
 }
 
-function InputDetails({ label, onChange, placeholder,type }: {
+function InputDetails({ label, onChange, placeholder,type,  }: {
     label: string,
     placeholder?: string,
     type: string,
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void,
+    
 
 }){
     return (
         <div className="flex flex-col gap-2 py-2 ">
             <label className="block mb-2 text-base font-semibold text-gray-900">{label}</label>
-            <input onChange={onChange}  type={type} id="first_name" className="bg-gray-50 border border-gray-300 text-gray-900 dark:placeholder-gray-400
+            <input onChange={onChange}  type={type} className="bg-gray-50 border border-gray-300 text-gray-900 dark:placeholder-gray-400
              p-2 rounded-md" placeholder={placeholder} required />
         </div>
     )

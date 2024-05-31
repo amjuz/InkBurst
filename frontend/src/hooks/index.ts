@@ -7,11 +7,11 @@ interface Blogs {
     title: string;
     content: string;
     genre: string;
-    createdAt: string
-    photoUrl: string
+    createdAt: string;
+    photoUrl: string;
     author: {
-        name: string
-    }
+        name: string;
+    };
 }
 
 export const useBlog = ({ id }: { id: number }) => {
@@ -41,25 +41,97 @@ export const useBlogs = () => {
 
     const [ loading, setLoading ] = useState(true);
     const [ blogs, setBlogs ] = useState<Blogs[]>([]);
+    const [ loggedIn, setLoggedIn ] = useState(true);
 
     useEffect(()=> {
+        const token = localStorage.getItem('token')
+
+        if(!token){
+            setLoggedIn(false)
+        }
+
         axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
             headers: {
-                authorization: localStorage.getItem('token')
+                authorization: token
             }
         })
-            .then( res => {
+        .then( res => {
+            if(res.status === 200){
                 setBlogs(res.data.allBlog)
                 setLoading(false)
-            });
+            }
+            else {
+                setLoggedIn(false)
+            }
+        })
+        .catch( error => {
+            if( error.response ){
+                switch( error.response.status ) {
+                    case 401: 
+                    case 403:
+                    case 411:
+                        setLoggedIn(false);
+                        break;
+                }
+            }
+                
+        })
     }, []);
 
     return {
+        loggedIn,
         loading,
         blogs
     }
 }
 
-export const useAuthorise = () => {
+export const useAuthnetication = () => {
+    const [ loggedIn, setLoggedIn ] = useState(false);
+    const token = localStorage.getItem('token');
+
+    useEffect(() => {
+        axios.get(`${BACKEND_URL}/api/v1/blog/auth`,{
+            headers: {
+                Authorization: token
+            }
+        })
+        .then( res => {
+            if(res.status === 200){
+                setLoggedIn(true);
+            }
+            else {
+                setLoggedIn(false);
+            }
+        })
+        .catch( error => {
+            console.log(error)
+        })
+    },[])
+    return {
+        loggedIn
+    }
+}
+
+export const useAuth = () => {
+    const [ loggedIn, setLoggedIn ] = useState(false);
     
+    useEffect(()=>{
+        const token = localStorage.getItem('token')
+
+        axios.get(`${BACKEND_URL}/api/v1/blog/auth`,{
+            headers: {
+                Authorization: token
+            }
+        })
+        .then( res => {
+            if( res.status === 200 ){
+                setLoggedIn(true)
+            } 
+        })
+        .catch(e => {
+            console.log(e)
+        })
+    },[])
+
+    return { loggedIn }
 }

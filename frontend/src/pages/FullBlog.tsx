@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useBlog } from "../hooks"
 import { OneBlogSkelton } from "../compnents/OneBlogSkelton";
+import moment from "moment-timezone";
+
 
 export const FullBlog = () => {
     const params = useParams<{ id: string }>(); 
@@ -19,8 +21,8 @@ export const FullBlog = () => {
             <div className="flex items-center gap-4  py-2 min-w-80">
                 <Avatar/>
                 <div className="">
-                    <div className="">{blog?.author.name} . Follow</div>
-                    <div className="">{blog?.createdAt}. date</div>
+                    <div className="">{blog?.author.name} </div>
+                    <div className="">{moment(blog?.createdAt).format('DD-MM-YY')} . {`${Math.floor((blog?.content as string).length/238  )} min read`}</div>
                 </div>
             </div>
             <div className="leading-8 font-bitter ">
@@ -35,7 +37,17 @@ export const FullBlog = () => {
 function Avatar() : JSX.Element {
     return(
         <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-            <svg className="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+            <svg 
+                className="absolute w-12 h-12 text-gray-400 -left-1" 
+                fill="currentColor" 
+                viewBox="0 0 20 20" 
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path 
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" 
+                >
+                </path>
+            </svg>
         </div>
     
     )

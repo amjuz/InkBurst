@@ -1,3 +1,4 @@
+import moment from "moment-timezone";
 import { Link } from "react-router-dom";
 
 
@@ -20,6 +21,7 @@ export function BlogCard({
     genre,
     
 }: BlogCardType ) {
+    
     return(
         <Link to={`/blog/${id}`}>
             <div className="mb-4 rounded-2xl max-w-fit min-w-full  hover:cursor-pointer px-3 ">
@@ -29,7 +31,7 @@ export function BlogCard({
                             <Avatar/>
                         </div>
                         <div className=" font-medium">{name} .</div>
-                        <div className="">{date}</div>
+                        <div className="">{moment(date).format('DD-MM-YY')}</div>
                     </div>
                     <div className="flex  justify-between min-h-8 max-h-28 gap-5">
                         <div className="flex flex-col ">
@@ -42,7 +44,7 @@ export function BlogCard({
                     </div>
                     <div className="flex gap-2 ">
                         <div className="text-white text-xs  bg-gray-500 px-2 grid place-content-center rounded-xl">{genre}</div>
-                        <div className="font-serif text-xs ">{`${Math.ceil(content.length/100)} min read`}</div>
+                        <div className="font-serif text-xs ">{`${Math.floor(content.length/238  )} min read`}</div>
                     </div>
                 </div>
             </div>
@@ -54,7 +56,17 @@ export function BlogCard({
 function Avatar() : JSX.Element {
     return(
         <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-            <svg className="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+            <svg 
+                className="absolute w-12 h-12 text-gray-400 -left-1" 
+                fill="currentColor" 
+                viewBox="0 0 20 20" 
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path 
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" 
+                >
+                </path>
+            </svg>
         </div>
     
     )

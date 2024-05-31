@@ -2,16 +2,16 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
-import { sign, decode, verify } from "hono/jwt";
+import { sign, decode, verify, jwt } from "hono/jwt";
 import { signinSchema, signupSchema } from '@amjuz/medium-blog'
 import { cors } from "hono/cors";
 import { env } from "hono/adapter";
 
 export const userRouter = new Hono<{
-    Bindings: {
-        DATABASE_URL: string,
-        JWT_SECRET: string
-    }
+  Bindings: {
+    DATABASE_URL: string,
+    JWT_SECRET: string
+  } 
 }>();
 
   userRouter.get('/test',(c)=>{
