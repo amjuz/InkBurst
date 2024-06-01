@@ -6,8 +6,8 @@ export function Home(){
     const navigate = useNavigate();
     return (
 
-        <div className="grid grid-cols-2 bg-yellow-500 w-full h-screen">
-                <div className="flex justify-end items-center -mt-40 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 bg-yellow-500 w-screen h-screen">
+                <div className="flex justify-end items-center mt-40 sm:-mt-40">
                     <div className="flex flex-col gap-10  w-4/5 h-96">
                         <div className=" w-fit text-9xl font-cormorant ">
                             Stay curious.
